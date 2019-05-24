@@ -70,7 +70,7 @@ Configuration:
           level: debug
 
     Logger:
-      - name: ph.com.truemoney.logging
+      - name: com.logging
         additivity: false
         level: info
         AppenderRef:
