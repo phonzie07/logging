@@ -1,0 +1,12 @@
+server:
+  port: 9090
+
+logger:
+  toggle: false
+
+# Datasource
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/logging
+    username: postgres
+    password: root

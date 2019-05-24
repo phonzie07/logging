@@ -1,0 +1,80 @@
+Configuration:
+  name: default
+  status: info
+  Properties:
+    property:
+      - name: log-path
+        value: "./logs"
+      - name: pattern
+        value: "[%-5level] %d{yyyy-mm-dd hh:mm:ss.sss} [%t] %c{1} - %msg%n"
+
+  Appenders:
+    Console:
+      name: console
+      target: system_out
+      PatternLayout:
+        Pattern: "${pattern}"
+    RollingFile:
+      - name: info_log
+        fileName: ${log-path}/info.log
+        filePattern: "${log-path}/logarchive/info.%d{yyyy-mm-dd-hh-mm}.log.zip"
+        PatternLayout:
+          Pattern: "${pattern}"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 50 kb
+        DefaultRollOverStrategy:
+          max: 30
+      - name: debug_log
+        fileName: ${log-path}/debug.log
+        filePattern: "${log-path}/logarchive/debug.%d{yyyy-mm-dd-hh-mm}.log.zip"
+        PatternLayout:
+          Pattern: "${pattern}"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 50 kb
+        DefaultRollOverStrategy:
+          max: 30
+      - name: error_log
+        fileName: ${log-path}/error.log
+        filePattern: "${log-path}/logarchive/error.%d{yyyy-mm-dd-hh-mm}.log.zip"
+        PatternLayout:
+          Pattern: "${pattern}"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 50 kb
+        DefaultRollOverStrategy:
+          max: 30
+      - name: controller
+        fileName: ${log-path}/controller.log
+        filePattern: "${log-path}/logarchive/controller.%d{yyyy-mm-dd-hh-mm}.log.zip"
+        PatternLayout:
+          Pattern: "%msg%n"
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: 50 kb
+        DefaultRollOverStrategy:
+          max: 30
+
+  Loggers:
+    Root:
+      level: info
+      AppenderRef:
+        - ref: console
+          level: info
+        - ref: info_log
+          level: info
+        - ref: error_log
+          level: error
+        - ref: debug_log
+          level: debug
+
+    Logger:
+      - name: ph.com.truemoney.logging
+        additivity: false
+        level: info
+        AppenderRef:
+          - ref: console
+            level: info
+          - ref: controller
+            level: info

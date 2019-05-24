@@ -1,0 +1,34 @@
+spring:
+  application:
+    name: test
+server:
+  api:
+    version: 0.1
+    port: 8081
+
+info:
+  app:
+    description: Generic Framework Test Service.
+    name: ${spring.application.name}
+    version: ${server.api.version}
+  build:
+    api-version: ${server.api.version}
+    artifact: ${spring.application.name}
+    description: ${info.app.description}
+    name: ${spring.application.name}
+    version: ${server.api.version}
+
+logger:
+  toggle:
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '"*"'
+# Datasource
+#spring:
+#  datasource:
+#    url: jdbc:postgresql://localhost:5432/test
+#    username: postgres
+#    password: root
