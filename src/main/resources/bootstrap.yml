@@ -1,8 +1,9 @@
 spring:
   application:
-    name: errorcode-constant, db
+    name: logging
   cloud:
     config:
+      name: errorcode-constant, db,eureka
       uri: http://localhost:8080
   profiles:
     active: local

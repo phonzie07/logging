@@ -5,7 +5,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+import static com.generic.utils.DateUtil.formatDate;
 
 /**
  * The type Api type.
@@ -15,7 +22,7 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Access( AccessType.FIELD )
-@EqualsAndHashCode(callSuper = false)
+@EqualsAndHashCode( callSuper = false )
 @AttributeOverride( name = "id", column = @Column( name = "api_id" ) )
 public class ApiType extends BaseEntity {
 
@@ -29,6 +36,10 @@ public class ApiType extends BaseEntity {
      */
     public ApiType( String name ) {
         this.name = name;
+    }
+
+    public String getCreatedTimeString( ) {
+        return formatDate( this.createdTime, "yyyy-MM-dd HH:mm:ss.SSS" );
     }
 
 }

@@ -6,7 +6,16 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.Access;
+import javax.persistence.AccessType;
+import javax.persistence.AttributeOverride;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
+import static com.generic.utils.DateUtil.formatDate;
 
 /**
  * The type Api request log.
@@ -48,6 +57,10 @@ public class ApiRequestLog extends BaseEntity {
         this.serviceUri = request.getServiceUri( );
         this.serviceUri = request.getServiceUri( );
         this.method = request.getMethod( );
+    }
+
+    public String getCreatedTimeString( ) {
+        return formatDate( this.createdTime, "yyyy-MM-dd HH:mm:ss.SSS" );
     }
 
 }

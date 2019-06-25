@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 
 import static com.generic.utils.MapperUtil.maskPropertyValue;
 
-
 /**
  * The type Log service.
  */
@@ -32,43 +31,43 @@ public class LogService implements ILogService {
     private ApiRequestRepository requestRepository;
 
     @Resource
-    private Map<String, String> uriMasking;
+    private Map< String, String > uriMasking;
 
     @Override
-    public void saveLog(ApiRequestLog apiRequestLog,
-                        String uri) {
+    public void saveLog( ApiRequestLog apiRequestLog,
+                         String uri ) {
 
-        apiRequestLog.setRequestMessage(maskPropertyValue(apiRequestLog.getRequestMessage()));
-        apiRequestLog.setResponseMessage(maskPropertyValue(apiRequestLog.getResponseMessage()));
+        apiRequestLog.setRequestMessage( maskPropertyValue( apiRequestLog.getRequestMessage( ) ) );
+        apiRequestLog.setResponseMessage( maskPropertyValue( apiRequestLog.getResponseMessage( ) ) );
 
         String finalUri;
 
-        if (uri.contains("beta-equator.tmn-dev.com")) finalUri = checkRegEx(uri);
+        if ( uri.contains( "beta-equator.tmn-dev.com" ) ) finalUri = checkRegEx( uri );
         else finalUri = uri;
 
-        ApiType apiType = Optional.ofNullable(apiRepository.findByName(finalUri))
-                .orElseGet(() -> apiRepository.save(new ApiType(finalUri)));
-        apiRequestLog.setApiType(apiType);
+        ApiType apiType = Optional.ofNullable( apiRepository.findByName( finalUri ) )
+                .orElseGet( ( ) -> apiRepository.save( new ApiType( finalUri ) ) );
+        apiRequestLog.setApiType( apiType );
 
-        log.info(MapperUtil.objectToJson(apiRequestLog));
-        requestRepository.save(apiRequestLog);
+        apiRequestLog = requestRepository.save( apiRequestLog );
+        log.info( MapperUtil.objectToJson( apiRequestLog ) );
     }
 
-    private String checkRegEx(String uri) {
+    private String checkRegEx( String uri ) {
 
-        for (Map.Entry<String, String> entry : uriMasking.entrySet()) {
-            String regEx = entry.getKey();
-            String val = entry.getValue();
-            Pattern pattern = Pattern.compile(regEx);
-            Matcher matcher = pattern.matcher(uri);
+        for ( Map.Entry< String, String > entry : uriMasking.entrySet( ) ) {
+            String regEx = entry.getKey( );
+            String val = entry.getValue( );
+            Pattern pattern = Pattern.compile( regEx );
+            Matcher matcher = pattern.matcher( uri );
 
-            if (matcher.find()) {
-                String temp = matcher.group();
-                pattern = Pattern.compile("\\d+");
-                matcher = pattern.matcher(temp);
-                if (matcher.find()) {
-                    String temp1 = temp.replace(matcher.group(), val);
-                    return uri.replaceAll(temp, temp1);
+            if ( matcher.find( ) ) {
+                String temp = matcher.group( );
+                pattern = Pattern.compile( "\\d+" );
+                matcher = pattern.matcher( temp );
+                if ( matcher.find( ) ) {
+                    String temp1 = temp.replace( matcher.group( ), val );
+                    return uri.replaceAll( temp, temp1 );
                 }
             }
         }
